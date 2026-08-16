@@ -34,7 +34,15 @@ nix build
 
 ## NixOS module
 
-Add the flake as an input and import its default NixOS module:
+Add the flake as an input:
+
+```nix
+  inputs = {
+    wfas.url = "github:Ishaan-Datta/wfas-nix";
+  };
+```
+
+And import its default NixOS module:
 
 ```nix
 {
@@ -60,6 +68,57 @@ Add the flake as an input and import its default NixOS module:
 ```
 
 The package defaults to the WFAS revision pinned by this flake.
+
+## Binary cache
+
+Pre-built packages are published to a Nix binary cache backed by GitHub Pages and GitHub Releases. Using the binary cache avoids rebuilding WFAS and its Gradle dependencies locally when a matching build is available.
+
+### Flake configuration
+
+Add the cache to your flake's `nixConfig`:
+
+```nix
+{
+  nixConfig = {
+    extra-substituters = [
+      "https://ishaan-datta.github.io/wfas-nix/"
+    ];
+
+    extra-trusted-public-keys = [
+      "wfas-nix-1:l/9zkf4IPGRlgOdd+Q1/mRrNgLiZ8Nnw89txoApBMbc="
+    ];
+  };
+}
+```
+
+Nix may prompt you to accept these flake-provided configuration options the first time you use the flake.
+
+### NixOS configuration
+
+To configure the cache system-wide on NixOS:
+
+```nix
+{
+  nix.settings = {
+    extra-substituters = [
+      "https://ishaan-datta.github.io/wfas-nix/"
+    ];
+
+    extra-trusted-public-keys = [
+      "wfas-nix-1:l/9zkf4IPGRlgOdd+Q1/mRrNgLiZ8Nnw89txoApBMbc="
+    ];
+  };
+}
+```
+
+After rebuilding your system, Nix will automatically use the cache whenever a matching store path is available. You can also test the cache without changing your system configuration:
+
+```sh
+nix build github:Ishaan-Datta/wfas-nix \
+  --option extra-substituters https://ishaan-datta.github.io/wfas-nix/ \
+  --option extra-trusted-public-keys \
+    'wfas-nix-1:l/9zkf4IPGRlgOdd+Q1/mRrNgLiZ8Nnw89txoApBMbc='
+```
 
 ## Updating
 
