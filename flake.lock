@@ -1,0 +1,45 @@
+{
+    "nodes": {
+        "nixpkgs": {
+            "locked": {
+                "lastModified": 1786599213,
+                "narHash": "sha256-yNJd40f11EzXBjSByCB7IPpeFFAdeoSKKM67dGkfFoU=",
+                "owner": "NixOS",
+                "repo": "nixpkgs",
+                "rev": "0e251e24a4f24e036a084b6b4b2d2491af4167f4",
+                "type": "github"
+            },
+            "original": {
+                "owner": "NixOS",
+                "ref": "nixos-unstable",
+                "repo": "nixpkgs",
+                "type": "github"
+            }
+        },
+        "root": {
+            "inputs": {
+                "nixpkgs": "nixpkgs",
+                "wfas-src": "wfas-src"
+            }
+        },
+        "wfas-src": {
+            "flake": false,
+            "locked": {
+                "lastModified": 1786751277,
+                "narHash": "sha256-EQdS7ig0uLilN/jIaMzSMnVzdRR7GkR0qbiTuLgdTok=",
+                "owner": "marcomorosi06",
+                "repo": "WiFiAudioStreaming-Desktop",
+                "rev": "f526b5d582c0f9c2750217c4e741d58fdd3e7f45",
+                "type": "github"
+            },
+            "original": {
+                "owner": "marcomorosi06",
+                "ref": "master",
+                "repo": "WiFiAudioStreaming-Desktop",
+                "type": "github"
+            }
+        }
+    },
+    "root": "root",
+    "version": 7
+}
