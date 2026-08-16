@@ -1,0 +1,65 @@
+name: Build and publish Nix cache
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: nix-cache
+  cancel-in-progress: false
+
+jobs:
+  build-cache:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Build WFAS
+        run: |
+          nix build --print-build-logs --print-out-paths \
+            | tee /tmp/store-paths.txt
+
+      - name: Publish binary cache
+        uses: randymarsh77/static-nix-cache/deploy@v1
+        with:
+          paths-file: /tmp/store-paths.txt
+          backend: github-releases
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-release-tag: nix-cache
+          signing-key: ${{ secrets.NIX_CACHE_SIGNING_KEY }}
+          static: ./site
+
+      - name: Make NAR URLs work on GitHub Pages
+        env:
+          RELEASE_BASE: https://github.com/${{ github.repository }}/releases/download/nix-cache
+        run: |
+          find ./site -type f -name '*.narinfo' \
+            -exec sed -i "s|^URL: nar/|URL: ${RELEASE_BASE}/|" {} +
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./site
+
+      - name: Deploy GitHub Pages
+        id: pages
+        uses: actions/deploy-pages@v4
