@@ -41,22 +41,20 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.services.wfas = {
+    systemd.user.services.wfas = {
       description = "WiFi Audio Streaming server";
 
       wantedBy = [
-        "multi-user.target"
+        "default.target"
       ];
 
       after = [
-        "network.target"
+        "pipewire-pulse.socket"
       ];
 
       serviceConfig = {
         Type = "simple";
-
         ExecStart = utils.escapeSystemdExecArgs ([ (lib.getExe cfg.package) ] ++ args);
-
         Restart = "on-failure";
         RestartSec = "2s";
       };
