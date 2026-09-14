@@ -36,7 +36,7 @@ jobs:
             | tee /tmp/store-paths.txt
 
       - name: Publish binary cache
-        uses: randymarsh77/static-nix-cache/deploy@v1
+        uses: Ishaan-Datta/static-nix-cache/deploy@master
         with:
           paths-file: /tmp/store-paths.txt
           backend: github-releases
