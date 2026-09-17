@@ -6,10 +6,10 @@ This package intentionally targets the headless `wfas` CLI rather than the Compo
 
 Currently supported:
 
-* `x86_64-linux`
-* Nix package / flake
-* NixOS systemd service
-* Offline Gradle dependency builds
+- `x86_64-linux`
+- Nix package / flake
+- NixOS systemd service
+- Offline Gradle dependency builds
 
 ## Usage
 
@@ -85,7 +85,7 @@ Add the cache to your flake's `nixConfig`:
     ];
 
     extra-trusted-public-keys = [
-      "wfas-nix-1:l/9zkf4IPGRlgOdd+Q1/mRrNgLiZ8Nnw89txoApBMbc="
+      "wfas-nix-2:C4etqRLF4scZdSnrwf3UvQUxdZE9nLQwqwafdtU/Fx8="
     ];
   };
 }
@@ -105,7 +105,7 @@ To configure the cache system-wide on NixOS:
     ];
 
     extra-trusted-public-keys = [
-      "wfas-nix-1:l/9zkf4IPGRlgOdd+Q1/mRrNgLiZ8Nnw89txoApBMbc="
+      "wfas-nix-2:C4etqRLF4scZdSnrwf3UvQUxdZE9nLQwqwafdtU/Fx8="
     ];
   };
 }
@@ -117,7 +117,7 @@ After rebuilding your system, Nix will automatically use the cache whenever a ma
 nix build github:Ishaan-Datta/wfas-nix \
   --option extra-substituters https://ishaan-datta.github.io/wfas-nix/ \
   --option extra-trusted-public-keys \
-    'wfas-nix-1:l/9zkf4IPGRlgOdd+Q1/mRrNgLiZ8Nnw89txoApBMbc='
+    'wfas-nix-2:C4etqRLF4scZdSnrwf3UvQUxdZE9nLQwqwafdtU/Fx8='
 ```
 
 ## Updating
